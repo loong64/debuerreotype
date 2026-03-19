@@ -51,7 +51,9 @@ if [ "$deb822" = 'auto' ]; then
 fi
 
 if [ -n "$deb822" ]; then
-	if [ -n "$ports" ]; then
+	if [ "$arch" = "loong64" ] && [ "$suite" = "trixie" ]; then
+		keyring='debian-loong64-non-official-archive-keyring'
+	elif [ -n "$ports" ]; then
 		keyring='debian-ports-archive-keyring'
 	else
 		keyring='debian-archive-keyring'

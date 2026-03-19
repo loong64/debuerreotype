@@ -38,14 +38,14 @@ fi
 epoch="$(date --date "$timestamp" '+%s')"
 
 if [ -z "$ports" ]; then
-	standardMirrors=( 'http://deb.debian.org/debian' )
+	standardMirrors=( 'http://mirrors.loong64.com/debian' )
 	snapshotStandardMirrors=( "$("$thisDir/.snapshot-url.sh" "@$epoch")" )
 else
 	standardMirrors=( 'http://deb.debian.org/debian-ports' )
 	snapshotStandardMirrors=( "$("$thisDir/.snapshot-url.sh" "@$epoch" 'debian-ports')" )
 fi
 
-securityMirrors=( 'http://deb.debian.org/debian-security' )
+securityMirrors=( 'http://mirrors.loong64.com/debian-security' )
 snapshotSecurityMirrors=( "$("$thisDir/.snapshot-url.sh" "@$epoch" 'debian-security')" )
 
 if [ -n "$eol" ]; then

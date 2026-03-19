@@ -104,6 +104,11 @@ if [ -n "$ports" ]; then
 		--include=debian-ports-archive-keyring
 	)
 fi
+if [ "$dpkgArch" = "loong64" ] && [ "$suite" = "trixie" ]; then
+	initArgs+=(
+		--include=debian-loong64-non-official-archive-keyring
+	)
+fi
 
 # TODO decouple this from GnuPG 🙈 (does "sop" have everything we need?)
 export GNUPGHOME="$tmpDir/gnupg"
@@ -126,9 +131,12 @@ else
 		ext='gpg'
 	fi
 	# check against all releases (ie, combine both "debian-archive-keyring.pgp" and "debian-archive-removed-keys.pgp"), since we cannot really know whether the target release became EOL later than the snapshot date we are targeting
+	gpg --keyserver keyserver.ubuntu.com --recv-keys 734FAB8ADC636909C6625883D81ED514A07B9DA8
+	gpg --export 734FAB8ADC636909C6625883D81ED514A07B9DA8 > "/usr/share/keyrings/debian-trixie-loong64.$ext"
 	gpg --batch --no-default-keyring --keyring "$keyring" --import \
 		"/usr/share/keyrings/debian-archive-keyring.$ext" \
-		"/usr/share/keyrings/debian-archive-removed-keys.$ext"
+		"/usr/share/keyrings/debian-archive-removed-keys.$ext" \
+		"/usr/share/keyrings/debian-trixie-loong64.$ext"
 	if [ -n "$ports" ]; then
 		gpg --batch --no-default-keyring --keyring "$keyring" --import \
 			"/usr/share/keyrings/debian-ports-archive-keyring.$ext" \
